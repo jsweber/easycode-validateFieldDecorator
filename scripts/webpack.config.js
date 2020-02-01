@@ -15,6 +15,9 @@ const config = {
         library: 'validateFieldDecorator',
     },
     mode: NODE_ENV,
+    resolve: {
+        extensions: ['.js', '.jsx', '.json', 'ts']
+    },
     module: {
         rules: [
             {

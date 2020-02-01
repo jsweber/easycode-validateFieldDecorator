@@ -3,5 +3,4 @@
 .CVS  
 .idea  
 node_modules/
-dist/
 build/

@@ -61,7 +61,7 @@ const config = {
 }
 
 config.devServer = {
-    contentBase: exampleBase,
+    contentBase: '/',
     compress: true,
     hot: true,
     inline: true,
