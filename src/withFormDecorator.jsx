@@ -4,7 +4,7 @@ import React from 'react'
 import FormContext from './context'
 import BuildValidationRules from './builtValidationRule'
 /**
- * 不希望更新它时出发渲染，所以放组件外
+ * 不希望更新它时触发渲染，所以放组件外
  * [
  *      'username': {
  *          rules: [
@@ -45,13 +45,16 @@ let allField = Object.create(null)
  */
 const validate = (rule, value) => {
     const {validate, errMsg, param} = rule
+    // 保证传入参数符合要求
     const params = Array.isArray(param) ? param.unshift(value) : [value, param]
+    // 优先调用自定义验证方法
     if (typeof validate === 'function' && !validate(...params)) return errMsg
+    // 调用内置验证方法
     else if (typeof validate === 'undefined' && rule.builtValidate) {
-        // 调用内置验证函数
         const builtValidate = BuildValidationRules[rule.builtValidate]
         if (builtValidate && !builtValidate(...params)) return  errMsg
     }
+
     return null
 }
 
