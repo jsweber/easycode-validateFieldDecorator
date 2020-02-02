@@ -1,24 +1,31 @@
 {
   "name": "validate-field-decorator",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
-  "main": "src/index.js",
+  "main": "dist/index.js",
+  "module": "lib/index.js",
   "scripts": {
     "start": "webpack-dev-server --inline --progress --config scripts/webpack.dev.js",
     "dev": "npm run start",
     "build": "npm run build:min",
     "build:min": "cross-env NODE_ENV=production webpack --config scripts/webpack.config.js",
     "build:full": "cross-env NODE_ENV=development webpack --config scripts/webpack.config.js",
+    "build:es6": "babel src --out-dir lib",
     "publish": "scripts/publish.sh"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com:jsweber/easycode-validateFieldDecorator.git"
   },
-  "keywords": [],
+  "keywords": [
+    "react",
+    "form",
+    "validate"
+  ],
   "author": "jsweber",
   "license": "ISC",
   "devDependencies": {
+    "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.4",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.8.3",

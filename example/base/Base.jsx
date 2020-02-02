@@ -1,7 +1,9 @@
 //author du
 
 import React from 'react'
-import {Form, Field} from '../../src/index'
+import { Form, Field } from '@lib/index'
+
+console.log(Field)
 
 class BaseExample extends React.Component{
 

@@ -10,7 +10,6 @@ const config = {
         path: path.resolve(__dirname, '../dist'),
         publicPath: '/',
         filename: 'validateFieldDecorator.js',
-        chunkFilename: '[id].js',
         libraryTarget: 'umd',
         library: 'validateFieldDecorator',
     },

@@ -27,7 +27,10 @@ const config = {
     ],
     mode: 'development',
     resolve: {
-        extensions: ['.js', '.jsx', '.json', 'ts']
+        extensions: ['.js', '.jsx', '.json', 'ts'],
+        alias: {
+            '@lib': path.resolve(__dirname, '../lib')
+        }
     },
 
     optimization: {
