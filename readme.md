@@ -1,7 +1,8 @@
 # validate-field-decorator
 
-A very simple Form Validation Tool base react
+<p>A very simple Form Validation Tool base react</p>
 
+[![Build Status](https://travis-ci.com/jsweber/easycode-validateFieldDecorator.svg?branch=master)](https://travis-ci.com/jsweber/easycode-validateFieldDecorator)
 
 # 1. Install
 
