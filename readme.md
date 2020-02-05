@@ -135,14 +135,11 @@ export default Form(App)
 # 3. props
 Form and Field is a function which pass component and return component, you can also call them HOC.
 
+### Form
+Just set prop attribute what you want for component which returned by Form 
 
-### (1).props of the component which return by <strong>Form</strong>
-
-
-### (2).props of the component which return by <strong>Field</strong>
-#### name
-
-#### rules
+### Field
+Add the <strong>rules</strong> attribute for Field component, pass validation rules, set <strong>name</strong> and other props for component which returned by Field as a specific key that needs to be validated.
 
 # 4. Built-in Validation
 ```js
