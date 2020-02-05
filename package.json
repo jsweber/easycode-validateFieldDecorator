@@ -1,6 +1,6 @@
 {
   "name": "validate-field-decorator",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "dist/index.js",
   "module": "lib/index.js",
@@ -63,5 +63,5 @@
   "peerDependencies": {
     "react": ">=16.0.0",
     "prop-types": "^15.5.7"
-  },
+  }
 }

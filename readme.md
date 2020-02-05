@@ -10,11 +10,9 @@ npm install --save validate-field-decorator
 
 Then use it.
 
-```js
+```jsx
 import React from 'react'
 import {Form, Field} from 'validate-field-decorator'
-import {Input} from 'antd'
-import style from 'style.module.scss'
 
 const InputWithMsg = props => {
     const {
@@ -36,9 +34,8 @@ const InputWithMsg = props => {
                 }
                 {label}
             </label>
-            <Input
+            <input
                 ref={_ref}
-                className={showMsg && style.errorFoucs}
                 onChange={onChange}
                 {...rest}
             />
@@ -65,7 +62,7 @@ class App extends React.Component{
         // validateFields from Form
         const {validateFields} = this.props
 
-        validateFields((err, fields, err) => {
+        validateFields((err, fields, ref) => {
 			if (err) {
                 // do something when error happens
                 ref.current && ref.current.focus()
@@ -74,6 +71,16 @@ class App extends React.Component{
                 // post('url', this.state.data)
 			}
 		})
+    }
+
+    changeValue= field => val => {
+        const {data} = this.state
+        this.setState({
+            data: {
+                ...data,
+                [field]: val
+            }
+        })
     }
 
     render(){
@@ -86,7 +93,7 @@ class App extends React.Component{
                     required
                     name="username"
                     value={data.username}
-                    onChange= {changeValue('username')}
+                    onChange= {this.changeValue('username')}
                     rules={{
                         builtValidate: 'required', // Built-in Validation
                         errMsg: 'required'
@@ -98,7 +105,7 @@ class App extends React.Component{
                     required
                     name="password"
                     value={data.password}
-                    onChange= {changeValue('password')}
+                    onChange= {this.changeValue('password')}
                     // multipe validater rules
                     rules={[
                         {
