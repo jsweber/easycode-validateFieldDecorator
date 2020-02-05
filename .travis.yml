@@ -5,4 +5,4 @@ brancher:
     only:
         - "master"
 script:
-    - "npm test"
+    - "npm build"
