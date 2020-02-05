@@ -1,8 +1,8 @@
 # validate-field-decorator
 
-A very simple form validate tool for react
+A very simple Form Validation Tool for react
 
-# 1. install
+# 1. Install
 
 ```sh
 npm install --save validate-field-decorator
@@ -10,15 +10,16 @@ npm install --save validate-field-decorator
 
 Then use it.
 
-```jsx
+# 2. Base Example
+```js
 import React from 'react'
 import {Form, Field} from 'validate-field-decorator'
 
 const InputWithMsg = props => {
     const {
-        showMsg=false, // from Field, a flag for showing error message
-        msgChildren='no message', // from Field, content of error message
-        _ref, // from Field, help locate field which happens error
+        showMsg=false, // this props is from Field, a flag for showing error message
+        msgChildren='no message', // this props is from Field, content of error message
+        _ref, // this props is from Field, help locate field which happens error
         onChange,  // wrappered by Field
         label,
         required, 
@@ -35,7 +36,7 @@ const InputWithMsg = props => {
                 {label}
             </label>
             <input
-                ref={_ref}
+                ref={_ref} // if you want to use auto focus when error happen, you neet to use _ref to translate ref
                 onChange={onChange}
                 {...rest}
             />
@@ -59,7 +60,7 @@ class App extends React.Component{
     }
 
     onSubmit= () => {
-        // validateFields from Form
+        // validateFields is from Form
         const {validateFields} = this.props
 
         validateFields((err, fields, ref) => {
@@ -114,9 +115,9 @@ class App extends React.Component{
                         },
                         {
                             validate(value){
-                                return String(value).length >= 6
+                                return /^\d*$/.test(value)
                             },
-                            errMsg: 'length must be longer'
+                            errMsg: 'must be number'
                         }
                     ]}
                 />
@@ -131,7 +132,19 @@ export default Form(App)
 
 ```
 
-# 2. Built-in Validation
+# 3. props
+Form and Field is a function which pass component and return component, you can also call them HOC.
+
+
+### (1).props of the component which return by <strong>Form</strong>
+
+
+### (2).props of the component which return by <strong>Field</strong>
+#### name
+
+#### rules
+
+# 4. Built-in Validation
 ```js
 
 const BuildValidationRule = {
@@ -158,3 +171,21 @@ const BuildValidationRule = {
 }
 
 ```
+
+# 5. Available Scripts
+### npm run dev
+Runs the example in the development mode.
+Open http://localhost:8707 to view it in the browser.
+
+The page will reload if you make edits file in example and src.
+You will also see any lint errors in the console.
+
+### npm run build:min
+The build is minified 
+
+### npm run build:full
+The build is Uncompressed
+
+### npm test
+
+### npm lint

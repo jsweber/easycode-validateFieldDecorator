@@ -2,13 +2,13 @@
 
 import React from 'react'
 import {Form, Field} from '@lib/index'
-import style from './style.css'
+import './style.css'
 
 const InputWithMsg = props => {
     const {
-        showMsg=false, // from Field, a flag for showing error message
-        msgChildren='no message', // from Field, content of error message
-        _ref, // from Field, help locate field which happens error
+        showMsg=false, // this props is from Field, a flag for showing error message
+        msgChildren='no message', // this props is from Field, content of error message
+        _ref, // this props is from Field, help locate field which happens error
         onChange,  // wrappered by Field
         label,
         required, 
@@ -20,13 +20,13 @@ const InputWithMsg = props => {
             <label>
                 {
                     required && 
-                    <i style={{color: 'red'}}>*</i>
+                    <i className="base-required">*</i>
                 }
-                {label}
+                {label}：
             </label>
             <input
-                ref={_ref}
-                // className={showMsg && style.errorFoucs}
+                ref={_ref} // if you want to use auto focus when error happen, you neet to use _ref to translate ref
+                className={showMsg ? 'base-error-foucs' : '' }
                 onChange={onChange}
                 {...rest}
             />
@@ -50,16 +50,18 @@ class App extends React.Component{
     }
 
     onSubmit= () => {
-        // validateFields from Form
+        // validateFields is from Form
         const {validateFields} = this.props
 
         validateFields((err, fields, ref) => {
+            console.log(fields)
 			if (err) {
                 // do something when error happens
                 ref.current && ref.current.focus()
 			}else {
                 // submit data
                 // post('url', this.state.data)
+                window.alert('submit success!')
 			}
 		})
     }
@@ -78,7 +80,8 @@ class App extends React.Component{
         const {data} = this.state
 
         return (
-            <div>
+            <div className="base-wrapper">
+                <h2>base example</h2>
                 <InputWithValidate
                     label="username"
                     required
@@ -105,9 +108,9 @@ class App extends React.Component{
                         },
                         {
                             validate(value){
-                                return String(value).length >= 6
+                                return /^\d*$/.test(value)
                             },
-                            errMsg: 'length must be longer'
+                            errMsg: 'must be number'
                         }
                     ]}
                 />

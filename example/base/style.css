@@ -1,3 +1,21 @@
-.errorFoucs {
+.base-wrapper {
+    padding: 50px;
+}
+
+.base-wrapper h2 {
+    margin-bottom: 20px;
+}
+
+.base-wrapper button {
+    margin-top: 20px;
+    padding: 5px 20px;
+    font-size: 16px;
+}
+
+.base-error-foucs {
     outline: 1px solid red;
+}
+
+.base-required {
+    color: red;
 }
