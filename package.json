@@ -32,6 +32,9 @@
   ],
   "author": "jsweber",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jsweber/easycode-validateFieldDecorator/issues"
+  },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.4",
