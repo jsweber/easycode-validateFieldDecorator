@@ -25,6 +25,14 @@
     margin-left: 30px;
 }
 
-.my-input {
+.my-input, .my-radio {
     margin-bottom: 20px;
+}
+
+.my-radio input {
+    margin-left: 10px;
+}
+
+.base-submit-btn {
+    margin-left: 30px;
 }

@@ -29,7 +29,8 @@ const config = {
     resolve: {
         extensions: ['.js', '.jsx', '.json', 'ts'],
         alias: {
-            '@lib': path.resolve(__dirname, '../lib')
+            '@lib': path.resolve(__dirname, '../lib'),
+            '@common': path.resolve(__dirname, '../example/common')
         }
     },
 

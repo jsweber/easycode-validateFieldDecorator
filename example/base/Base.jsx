@@ -3,90 +3,8 @@
 import React from 'react'
 import {Form, Field} from '../../src/index'
 import './style.css'
-
-const InputWithMsg = props => {
-    const {
-        showMsg=false, // this props is from Field, a flag for showing error message
-        msgChildren='no message', // this props is from Field, content of error message
-        _ref, // this props is from Field, help locate field which happens error
-        onChange,  // wrappered by Field
-        label,
-        required, 
-        ...rest
-        } = props
-
-    return (
-        <div className="my-input">
-            <label>
-                {
-                    required && 
-                    <i className="base-required">*</i>
-                }
-                {label}：
-            </label>
-            <input
-                ref={_ref} // if you want to use auto focus when error happen, you neet to use _ref to translate ref
-                className={showMsg ? 'base-error-foucs' : '' }
-                onChange={onChange}
-                {...rest}
-            />
-            {
-                showMsg && 
-                <span>{msgChildren}</span>
-            }
-        </div>
-    )
-}
-
-const RadioWithMsg = props => {
-    const {
-        showMsg=false, // this props is from Field, a flag for showing error message
-        msgChildren='no message', // this props is from Field, content of error message
-        _ref, // this props is from Field, help locate field which happens error
-        onChange,  // wrappered by Field
-        label,
-        required, 
-        ...rest
-        } = props
-
-    return (
-        <div className="my-input">
-            <label>
-                {
-                    required && 
-                    <i className="base-required">*</i>
-                }
-                {label}：
-            </label>
-            <>
-                 <input
-                    ref={_ref}
-                    type="radio"
-                    name={label}
-                    onClick={() => onChange('unkown')}
-                    className={showMsg ? 'base-error-foucs' : '' }
-                    {...rest}
-                />unkown
-                <input
-                    name={label}
-                    type="radio"
-                    onClick={() => onChange('male')}
-                    {...rest}
-                />male
-                <input
-                    type="radio"
-                    name={label}
-                    onClick={() => onChange('female')}
-                    {...rest}
-                />female
-            </>
-            {
-                showMsg && 
-                <span className="base-msg">{msgChildren}</span>
-            }
-        </div>
-    )
-}
+import InputWithMsg from '@common/InputWithMsg' // ../common/InputWithMsg
+import RadioWithMsg from '@common/RadioWithMsg' // ../common/RadioWithMsg
 
 const InputWithValidate = Field(InputWithMsg)
 const RadioWithValidate = Field(RadioWithMsg)
@@ -114,7 +32,7 @@ class App extends React.Component{
 			}else {
                 // submit data
                 // post('url', this.state.data)
-                window.alert('submit success!')
+                window.alert(JSON.stringify(fields))
 			}
 		})
     }
@@ -136,11 +54,10 @@ class App extends React.Component{
             <div className="base-wrapper">
                 <h2>base example</h2>
                 <InputWithValidate
-                    label="username"
-                    required
                     name="username"
                     value={data.username}
                     onChange= {this.changeValue('username')}
+                    required
                     rules={{
                         builtValidate: 'required', // Built-in Validation
                         errMsg: 'required'
@@ -148,11 +65,10 @@ class App extends React.Component{
                 />
 
                 <InputWithValidate
-                    label="password"
-                    required
                     name="password"
                     value={data.password}
                     onChange= {this.changeValue('password')}
+                    required
                     // multipe validater rules
                     rules={[
                         {
@@ -181,7 +97,10 @@ class App extends React.Component{
                     }}
                 />
 
-                <button onClick={this.onSubmit}>submit</button>
+                <button 
+                    onClick={this.onSubmit}
+                    className="base-submit-btn"
+                >submit</button>
             </div>
         )
     }

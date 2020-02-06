@@ -84,7 +84,6 @@ const Field = Cmp => {
             const {errMsg, showMsg} = this.state
             const itemProps = omit([
                 'onChange',
-                'name',
                 'rules'
             ], this.props)
             
