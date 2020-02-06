@@ -16,7 +16,7 @@ const InputWithMsg = props => {
         } = props
 
     return (
-        <div>
+        <div className="my-input">
             <label>
                 {
                     required && 
@@ -50,7 +50,7 @@ const RadioWithMsg = props => {
         } = props
 
     return (
-        <div>
+        <div className="my-input">
             <label>
                 {
                     required && 
@@ -82,7 +82,7 @@ const RadioWithMsg = props => {
             </>
             {
                 showMsg && 
-                <span>{msgChildren}</span>
+                <span className="base-msg">{msgChildren}</span>
             }
         </div>
     )
