@@ -9,7 +9,7 @@ export const getEventValue = e => e.target ? e.target.value : e
 
 const Field = Cmp => {
 
-    return class FormItem extends React.Component{
+    return class FormItem extends React.PureComponent{
         static contextType = FormContext
 
         static defaultProps = {
@@ -23,8 +23,6 @@ const Field = Cmp => {
         }
 
         state = {
-            value: '',
-            myRule: {},
             showMsg: false,
             errMsg: ''
         }
@@ -48,7 +46,12 @@ const Field = Cmp => {
             addField(name, {
                 rules,
                 value,
-                ref: this.ref
+                instance: {
+                    ref: this.ref,
+                    update: () => {
+                        this.onWrapperdChange(value)
+                    }
+                }
             })
         }
 
@@ -71,6 +74,10 @@ const Field = Cmp => {
                     showMsg: false
                 })
             }
+            this.setState({
+                errMsg,
+                showMsg: !!errMsg
+            })
         }
 
         render(){
