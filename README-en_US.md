@@ -1,12 +1,12 @@
 # validate-field-decorator
 
-<p>简单好用的表单验证工具</p>
+<p>A very simple Form Validation Tool base react</p>
 
 [![Build Status](https://travis-ci.com/jsweber/easycode-validateFieldDecorator.svg?branch=master)](https://travis-ci.com/jsweber/easycode-validateFieldDecorator)
 
-[English](./README-en_US.md)
+[简体中文](./README.md)
 
-# 1. 安装
+# 1. Install
 
 ```sh
 npm install --save validate-field-decorator
@@ -14,18 +14,17 @@ npm install --save validate-field-decorator
 
 Then use it.
 
-# 2. 使用案例
+# 2. Base Example
 ```js
 import React from 'react'
 import {Form, Field} from 'validate-field-decorator'
 
 const InputWithMsg = props => {
     const {
-        showMsg=false, // Field传给当前组件的prop, 当rules中的某条规则验证不通过时，showMsg为true，全部验证通过为false
-        msgChildren='no message', // Field传给当前组件的prop, 当rules中的某条规则验证不通过时，msgChildren即为该rule的errMsg
-        _ref, // Field传给当前组件的prop， 详情参考 6.QA
-        onChange,  // Field封装后返回的函数，Field需要监听值变化
-        // 对于以下prop，Field没有经过任何改动，直接转发
+        showMsg=false, // this props is from Field, a flag for showing error message
+        msgChildren='no message', // this props is from Field, content of error message
+        _ref, // this props is from Field, help locate field which happens error
+        onChange,  // wrappered by Field
         label,
         required, 
         ...rest
@@ -139,12 +138,13 @@ export default Form(App)
 ```
 
 # 3. props
-理解成装饰器或者高阶组件都可以
+Form and Field is a function which pass component and return component, you can also call them HOC.
 
 ### Form
+Just set prop attribute what you want for component which returned by Form 
 
 ### Field
-
+Add the <strong>rules</strong> attribute for Field component, pass validation rules, set <strong>name</strong> and other props for component which returned by Field as a specific key that needs to be validated.
 
 # 4. Built-in Validation
 ```js
@@ -174,35 +174,20 @@ const BuildValidationRule = {
 
 ```
 
-# 5. 可运行的npm命令
+# 5. Available Scripts
 ### npm run dev
-运行开发环境
-浏览器访问http://localhost:8707
-更改src和example内代码后，保存即可查看效果
+Runs the example in the development mode.
+Open http://localhost:8707 to view it in the browser.
+
+The page will reload if you edit file in example and src.
+You will also see any lint errors in the console.
 
 ### npm run build:min
-打包并压缩代码
+The build is minified 
 
 ### npm run build:full
-打包代码，代码不压缩
+The build is Uncompressed
 
 ### npm test
-运行测试
 
 ### npm lint
-检查代码规范
-
-# 6. QA
-#### 1.为什么不像类似elementUI那样把rules集中到Form上
-validateFieldDecorator是为了解决页面有大量input元素需要验证而诞生的。
-当页面有大量input（包括 checkbox, radio等）元素，以至于开发者不得不分很多组件去实现时，
-如果在Form返回的父组件上去统一设置rules(一个由name作为键名，验证规则为键值的对象)，还需要在每个组件上设置name，不利于解耦和多人合作。
-所以validateFieldDecorator设计成用Form提供的<strong>validateFields</strong>方法统一验证，不需要关心子组件设置了哪些表单字段和验证规则，
-同时利用[refs转发](https://react.docschina.org/docs/forwarding-refs.html)，实现自动提供出错的input元素。
-
-#### 2. 如何实现validateFieldDecorator方法调用时获取验证不同过的元素
-在使用Field时我们会如下调用
-```js
- const InputWithValidation = Field(MineInput)
-```
-MineInput组件通过props可以得到一个_ref参数，把它传给你想定位元素的ref上，参照案例。
