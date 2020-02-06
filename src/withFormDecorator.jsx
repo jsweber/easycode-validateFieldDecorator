@@ -10,16 +10,16 @@ import BuildValidationRules from './builtValidationRule'
  * @param {any} value 需要验证的值
  */
 const validate = (rule, value) => {
-    const {validate, errMsg, param} = rule
+    const {validate, builtValidate, asyncValidate, errMsg, param} = rule
     // 保证传入参数符合要求
     const params = Array.isArray(param) ? param.unshift(value) : [value, param]
     // 优先调用自定义验证方法
-    if (typeof validate === 'function' && !validate(...params)) return errMsg
+    if (validate && !validate(...params)) return errMsg
     // 调用内置验证方法
-    else if (typeof validate === 'undefined' && rule.builtValidate) {
-        const builtValidate = BuildValidationRules[rule.builtValidate]
-        if (builtValidate && !builtValidate(...params)) return  errMsg
-    }
+    if (builtValidate &&  BuildValidationRules[builtValidate] && !BuildValidationRules[builtValidate](...params))
+        return errMsg
+    // 异步验证
+    if (asyncValidate) return {validateAsyncPromise: asyncValidate(...params)}
 
     return null
 }
@@ -36,20 +36,19 @@ const Form = Cmp => class Form extends React.Component{
  *      'username': {
  *          rules: [
  *              {
- *                  validate(value){
- *                  return value !== ''
+ *                  validate(value, ...rest){
+ *                  return value !== rest[0]
  *              },
- *                  param: [8]
- *                  message: 'must input something',
+ *                  param: [-1]
+ *                  message: 'can not be -1',
  *              },
  *              {   内置验证方法使用
  *                  builtValidate: 'max',
- *                  param: 8
  *                  message: 'required'
  *              },
  *              {
  *                  // 处理异步验证
- *                  validate(value) {
+ *                  asyncValidate(value) {
  *                      return new Promise((resolve, reject) => {
  *                          setTimeout(() => {
  *                              resolve(true)
@@ -70,19 +69,25 @@ const Form = Cmp => class Form extends React.Component{
     addField= (name, field) => {
         this.allField[name] = field
     }
-
+    /**
+     * 验证一个field的所有rule
+     * @param {array | object} rules
+     * @param {any} value 输入元素的值
+     * @return {promise} 返回一个promise作为结果，当所有的rule都符合时，resolve(null), 当有一个rule不符合就立刻resolve(errorMessage)
+     */
     validateField= (rules, value) => {
         if (Array.isArray(rules)) {
             for (let i =0; i < rules.length; i++){
                 const retMsg = validate(rules[i], value)
-                if (retMsg) return retMsg
+                if (retMsg)
+                    return retMsg.validateAsyncPromise || Promise.resolve(retMsg)
             }
         } else if (typeof rules === 'object'){
             // 支持直接给rule传一个对象
             const retMsg = validate(rules, value)
-            if (retMsg) return retMsg
+            if (retMsg) return retMsg.validateAsyncPromise || Promise.resolve(retMsg)
         }
-        return null
+        return Promise.resolve(null)
     }
     /**
      * 验证所有的字段是否正确
@@ -90,24 +95,39 @@ const Form = Cmp => class Form extends React.Component{
      */
     validateFields= (cb) => {
         const allField = this.allField
-        let retMsg = null, ret = {}, retCmp = null
+        let ret = {}, errMsg = null, ref = {}
+        const validatedPromises = []
+
         for (let field in allField){
             const fieldRule = allField[field]
             const {rules, value, instance} = fieldRule
-            retMsg = this.validateField(rules, value)
-            if (retMsg) {
-                retCmp = instance.ref
-                instance.update()
-                break
-            }
+
             ret[field] = value
+            
+            validatedPromises.push({
+                instance,
+                result: this.validateField(rules, value)
+            })
         }
 
-        /**
-         * @param {string} retMsg 错误信息
-         * @param {object} ret { username: { value, ...retNeedValue } }
-         */
-        cb(retMsg, ret, retCmp)
+        Promise.all(validatedPromises.map(item => item.result))
+        .then(results => {
+            for (let i = 0; i < results.length; i++) {
+                if (results[i]) {
+                    const {instance} = validatedPromises[i]
+                    instance.update()
+                    errMsg = results[i]
+                    ref = instance.ref
+                    break
+                }
+            }
+
+            /**
+             * @param {string} retMsg 错误信息
+             * @param {object} fields { username: { value, ...retNeedValue } }
+             */
+            cb(errMsg, ret, ref)
+        })
     }
 
     render(){

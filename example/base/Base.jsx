@@ -3,6 +3,7 @@
 import React from 'react'
 import {Form, Field} from '../../src/index'
 import './style.css'
+import {debounce} from '../utils'
 import InputWithMsg from '@common/InputWithMsg' // ../common/InputWithMsg
 import RadioWithMsg from '@common/RadioWithMsg' // ../common/RadioWithMsg
 
@@ -15,6 +16,7 @@ class App extends React.Component{
         data: {
             username: '',
             password: '',
+            local: '',
             sex: ''
         }
     }
@@ -83,12 +85,34 @@ class App extends React.Component{
                         }
                     ]}
                 />
-                <RadioWithValidate
-                    label="sex"
+                <InputWithValidate
+                    name="local"
+                    value={data.local}
+                    onChange= {this.changeValue('local')}
                     required
+                    debounce={500} // default 80
+                    // async validate
+                    rules={{
+                        asyncValidate(value){
+                            return new Promise( resolve => {
+                                setTimeout(() => {
+                                    if (value === 'ok') {
+                                        // 异步验证成功
+                                        resolve(null)
+                                    } else {
+                                        // 异步验证失败
+                                        resolve('must be ok')
+                                    }
+                                }, 500)
+                            })
+                        }
+                    }}
+                />
+                <RadioWithValidate
                     name="sex"
                     value={data.sex}
                     onChange= {this.changeValue('sex')}
+                    required
                     rules={{
                         validate(value){
                             return value === 'unkown'

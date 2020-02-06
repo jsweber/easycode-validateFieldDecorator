@@ -6,6 +6,18 @@ import FormContext from './context'
 import omit from 'omit'
 
 export const getEventValue = e => e.target ? e.target.value : e
+export const debounce = (fn, delay= 100) => {
+    let timer = null
+
+    return (...args) => {
+        if (timer) clearTimeout(timer)
+
+        timer = setTimeout(() => {
+            fn(...args)
+            timer = null
+        }, delay)
+    }
+}
 
 const Field = Cmp => {
 
@@ -14,12 +26,14 @@ const Field = Cmp => {
 
         static defaultProps = {
             name: '',
-            rules: []
+            rules: [],
+            debounce: 80
         }
 
         static propTypes = {
             name: PropTypes.string.isRequired,
-            rules: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
+            rules: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+            debounce: PropTypes.number
         }
 
         state = {
@@ -30,6 +44,7 @@ const Field = Cmp => {
         constructor(props) {
             super(props)
             this.ref = React.createRef()
+            this.timer = null
         }
 
         componentDidUpdate() {
@@ -55,29 +70,28 @@ const Field = Cmp => {
             })
         }
 
+        debounceValidate= (rules, value) => {
+            if (this.timer) clearTimeout(this.timer)
+
+            this.timer = setTimeout(() => {
+                console.log(value)
+                this.context.validateField(rules, value).then(errMsg => {
+                    this.setState({
+                        errMsg,
+                        showMsg: !!errMsg
+                    })
+                })
+                this.timer = null
+            }, this.props.debounce)
+        }
+
         onWrapperdChange= e => {
-            const {showMsg} = this.state
             const {rules, onChange} = this.props
             const value = getEventValue(e)
-            const errMsg = this.context.validateField(rules, value)
+
             onChange(value)
             this.addRule(value)
-            if (!showMsg && errMsg) {
-                // 没有展示信息，但是错误了
-                this.setState({
-                    errMsg,
-                    showMsg: true
-                })
-            } else if (showMsg && !errMsg) {
-                // 已经展示信息，但是正确了
-                this.setState({
-                    showMsg: false
-                })
-            }
-            this.setState({
-                errMsg,
-                showMsg: !!errMsg
-            })
+            this.debounceValidate(rules, value)
         }
 
         render(){
