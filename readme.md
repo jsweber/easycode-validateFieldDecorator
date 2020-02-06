@@ -193,14 +193,14 @@ const BuildValidationRule = {
 检查代码规范
 
 # 6. QA
-#### 1.为什么不像类似elementUI那样把rules集中到Form上
+#### 1.为什么不像elementUI那样把rules集中到Form上
 validateFieldDecorator是为了解决页面有大量input元素需要验证而诞生的。
-当页面有大量input（包括 checkbox, radio等）元素，以至于开发者不得不分很多组件去实现时，
+当页面有大量input（包括 checkbox, radio等），以至于开发者不得不分很多组件去实现时，
 如果在Form返回的父组件上去统一设置rules(一个由name作为键名，验证规则为键值的对象)，还需要在每个组件上设置name，不利于解耦和多人合作。
 所以validateFieldDecorator设计成用Form提供的<strong>validateFields</strong>方法统一验证，不需要关心子组件设置了哪些表单字段和验证规则，
 同时利用[refs转发](https://react.docschina.org/docs/forwarding-refs.html)，实现自动提供出错的input元素。
 
-#### 2. 如何实现validateFieldDecorator方法调用时获取验证不同过的元素
+#### 2. 如何实现validateFieldDecorator方法调用时，获取验证不通过的元素
 在使用Field时我们会如下调用
 ```js
  const InputWithValidation = Field(MineInput)
