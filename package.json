@@ -1,6 +1,6 @@
 {
   "name": "validate-field-decorator",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A very simple Form Validation Tool based on react",
   "main": "dist/index.js",
   "module": "lib/index.js",

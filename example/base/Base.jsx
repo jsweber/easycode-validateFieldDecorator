@@ -3,7 +3,6 @@
 import React from 'react'
 import {Form, Field} from '../../src/index'
 import './style.css'
-import {debounce} from '../utils'
 import InputWithMsg from '@common/InputWithMsg' // ../common/InputWithMsg
 import RadioWithMsg from '@common/RadioWithMsg' // ../common/RadioWithMsg
 
