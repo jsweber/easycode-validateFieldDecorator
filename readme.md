@@ -1,6 +1,8 @@
 # validate-field-decorator
 <h3>简单好用的表单验证工具</h3>
-<p>使用简单，可以应对各种复杂场景，提供ref帮助自动foucs到报错元素</p>
+
+### Features
+<p>使用简单；可以应对各种复杂场景；提供ref,方便foucs到报错元素</p>
 
 [![Build Status](https://travis-ci.com/jsweber/easycode-validateFieldDecorator.svg?branch=master)](https://travis-ci.com/jsweber/easycode-validateFieldDecorator)
 
@@ -137,14 +139,82 @@ class App extends React.Component{
 export default Form(App)
 
 ```
+#### [页面效果](https://jsweber.github.io/easycode-validateFieldDecorator/)
+#### [完整案例代码](https://github.com/jsweber/easycode-validateFieldDecorator/blob/master/example/base/Base.jsx)
+#### [如何实现支持ref转发的输入组件](./EADME.translate_ref.md)
 
-# 3. props
+# 3. Props
 理解成装饰器或者高阶组件都可以
 
-### Form
+## (1).Form
+```js
+const WrapperedForm = Form(MyForm)
+```
+### MyForm
+- validateFields 提交时验证验证所有规则，使用见案例
 
-### Field
+### WrapperedForm
 
+- 没有必传的参数，可以根据自己的需要设置props
+
+## (2).Field
+
+```js
+const WrapperedInput = Form(MyInput)
+```
+
+### MyInput
+参数详情[如何实现支持ref转发的输入组件](./EADME.translate_ref.md)
+
+### WrapperedInput
+
+- name @param{stringc | number} 必传且唯一，作为需要验证字段的key值
+- rules @param{object | array} 必传，字段验证规则，当只有一条规则时可以直接传一个对象，当有多条规则时，用数组，
+- value @param{number | string | boolean} 必传，作为input的value值
+- onChange @param{function }必传，作为input的change事件的监听函数
+- debounce @param{number} 可选，防抖的时间，单位毫秒
+
+### rule
+- validate 自定义验证函数，同步验证
+- asyncValidate 支持异步验证的函数
+- builtValidate 使用内置验证函数
+- message 作为验证不通过时的报错信息
+- param 可选，作为validate , builtValidate, asyncValidate 额外参数
+
+#### 自定义同步验证函数
+```js
+    {
+        validate(value, ...rest){
+            return value !== rest[0]
+        }
+        param: [-1]
+        message: 'can not be -1',
+    }
+```
+#### 内置验证方法使用
+```js
+   {
+        builtValidate: 'max',
+        message: 'required'
+   }
+```
+
+#### 异步验证
+```js
+    asyncValidate(value){
+        return new Promise( resolve => {
+            setTimeout(() => {
+                if (value === 'ok') {
+                    // 异步验证成功
+                    resolve()
+                } else {
+                    // 异步验证失败, resolve传错误信息
+                    resolve('must be ok')
+                }
+            }, 500)
+        })
+    }
+```
 
 # 4. Built-in Validation
 ```js
@@ -205,4 +275,4 @@ validateFieldDecorator是为了解决页面有大量input元素需要验证而�
 ```js
  const InputWithValidation = Field(MineInput)
 ```
-MineInput组件通过props可以得到一个_ref参数，把它传给你想定位元素的ref上，参照案例。
+MineInput组件经过Field包装后，通过props可以得到一个_ref参数，把它传给你想定位元素的ref上，详情参照[如何实现支持ref转发的输入组件](./EADME.translate_ref.md)。
