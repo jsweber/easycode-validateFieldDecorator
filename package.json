@@ -11,6 +11,7 @@
     "build:min": "cross-env NODE_ENV=production webpack --config scripts/webpack.config.js",
     "build:full": "cross-env NODE_ENV=development webpack --config scripts/webpack.config.js",
     "build:es6": "npm run lint && npm run build:min && babel src --out-dir lib",
+    "build:example": "webpack --config scripts/webpack.dev.js",
     "publish": "npm run build:es6 && scripts/publish.sh",
     "lint": "eslint ./src",
     "test": "jest --coverage"

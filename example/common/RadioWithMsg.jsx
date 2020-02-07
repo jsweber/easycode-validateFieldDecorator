@@ -12,6 +12,8 @@ const RadioWithMsg = props => {
         ...rest
         } = props
 
+        const NameOrLabel = label || name
+
     return (
         <div className="my-radio">
             <label>
@@ -19,26 +21,26 @@ const RadioWithMsg = props => {
                     required && 
                     <i className="base-required">*</i>
                 }
-                {label || name}：
+                {NameOrLabel}：
             </label>
             <>
                  <input
                     ref={_ref}
                     type="radio"
-                    name={label}
+                    name={NameOrLabel}
                     onClick={() => onChange('unkown')}
                     className={showMsg ? 'base-error-foucs' : '' }
                     {...rest}
                 />unkown
                 <input
-                    name={label}
+                    name={NameOrLabel}
                     type="radio"
                     onClick={() => onChange('male')}
                     {...rest}
                 />male
                 <input
                     type="radio"
-                    name={label}
+                    name={NameOrLabel}
                     onClick={() => onChange('female')}
                     {...rest}
                 />female

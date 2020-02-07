@@ -67,6 +67,7 @@ class App extends React.Component{
 
                 <InputWithValidate
                     name="password"
+                    type="password"
                     value={data.password}
                     onChange= {this.changeValue('password')}
                     required
@@ -89,7 +90,7 @@ class App extends React.Component{
                     value={data.local}
                     onChange= {this.changeValue('local')}
                     required
-                    debounce={500} // default 80
+                    debounce={300} // default 60
                     // async validate
                     rules={{
                         asyncValidate(value){
@@ -97,9 +98,9 @@ class App extends React.Component{
                                 setTimeout(() => {
                                     if (value === 'ok') {
                                         // 异步验证成功
-                                        resolve(null)
+                                        resolve()
                                     } else {
-                                        // 异步验证失败
+                                        // 异步验证失败, resolve传错误信息
                                         resolve('must be ok')
                                     }
                                 }, 500)

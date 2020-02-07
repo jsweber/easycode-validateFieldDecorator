@@ -12,6 +12,8 @@ const InputWithMsg = props => {
         ...rest
         } = props
 
+        const NameOrLabel = label || name
+
     return (
         <div className="my-input">
             <label>
@@ -19,12 +21,13 @@ const InputWithMsg = props => {
                     required && 
                     <i className="base-required">*</i>
                 }
-                {label || name}：
+                {NameOrLabel}：
             </label>
             <input
                 ref={_ref} // if you want to use auto focus when error happen, you neet to use _ref to translate ref
                 className={showMsg ? 'base-error-foucs' : '' }
                 onChange={onChange}
+                name={name}
                 {...rest}
             />
             {

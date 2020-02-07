@@ -1,6 +1,6 @@
 # validate-field-decorator
-
-<p>简单好用的表单验证工具</p>
+<h3>简单好用的表单验证工具</h3>
+<p>使用简单，可以应对各种复杂场景，提供ref帮助自动foucs到报错元素</p>
 
 [![Build Status](https://travis-ci.com/jsweber/easycode-validateFieldDecorator.svg?branch=master)](https://travis-ci.com/jsweber/easycode-validateFieldDecorator)
 

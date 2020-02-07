@@ -6,18 +6,6 @@ import FormContext from './context'
 import omit from 'omit'
 
 export const getEventValue = e => e.target ? e.target.value : e
-export const debounce = (fn, delay= 100) => {
-    let timer = null
-
-    return (...args) => {
-        if (timer) clearTimeout(timer)
-
-        timer = setTimeout(() => {
-            fn(...args)
-            timer = null
-        }, delay)
-    }
-}
 
 const Field = Cmp => {
 
@@ -27,7 +15,7 @@ const Field = Cmp => {
         static defaultProps = {
             name: '',
             rules: [],
-            debounce: 80
+            debounce: 60
         }
 
         static propTypes = {
@@ -74,7 +62,6 @@ const Field = Cmp => {
             if (this.timer) clearTimeout(this.timer)
 
             this.timer = setTimeout(() => {
-                console.log(value)
                 this.context.validateField(rules, value).then(errMsg => {
                     this.setState({
                         errMsg,
