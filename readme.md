@@ -141,7 +141,7 @@ export default Form(App)
 ```
 #### [页面效果](https://jsweber.github.io/easycode-validateFieldDecorator/)
 #### [完整案例代码](https://github.com/jsweber/easycode-validateFieldDecorator/blob/master/example/base/Base.jsx)
-#### [如何实现支持ref转发的输入组件](./README.translate_ref.md)
+#### [如何实现支持ref转发的输入组件](./README-translate_ref.md)
 
 # 3. Props
 理解成装饰器或者高阶组件都可以
@@ -164,7 +164,7 @@ const WrapperedInput = Form(MyInput)
 ```
 
 ### MyInput
-参数详情[如何实现支持ref转发的输入组件](./README.translate_ref.md)
+参数详情[如何实现支持ref转发的输入组件](./README-translate_ref.md)
 
 ### WrapperedInput
 
@@ -275,4 +275,4 @@ validateFieldDecorator是为了解决页面有大量input元素需要验证而�
 ```js
  const InputWithValidation = Field(MineInput)
 ```
-MineInput组件经过Field包装后，通过props可以得到一个_ref参数，把它传给你想定位元素的ref上，详情参照[如何实现支持ref转发的输入组件](./README.translate_ref.md)。
+MineInput组件经过Field包装后，通过props可以得到一个_ref参数，把它传给你想定位元素的ref上，详情参照[如何实现支持ref转发的输入组件](./README-translate_ref.md)。
