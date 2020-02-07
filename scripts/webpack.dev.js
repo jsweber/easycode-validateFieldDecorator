@@ -10,7 +10,7 @@ const config = {
         app: path.resolve(exampleBase, 'index.js')
     },
     output: {
-        path: path.resolve(exampleBase, 'dist'),
+        path: path.resolve(__dirname, '../docs'),
         publicPath: '',
         filename: '[name].[hash:8].js',
     },
