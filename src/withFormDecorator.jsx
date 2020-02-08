@@ -12,7 +12,7 @@ import BuildValidationRules from './builtValidationRule'
 const validate = (rule, value) => {
     const {validate, builtValidate, asyncValidate, errMsg, param} = rule
     // 保证传入参数符合要求
-    const params = Array.isArray(param) ? param.unshift(value) : [value, param]
+    const params = Array.isArray(param) ? [value, ...param] : [value, param]
     // 优先调用自定义验证方法
     if (validate && !validate(...params)) return errMsg
     // 调用内置验证方法

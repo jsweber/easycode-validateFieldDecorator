@@ -2,7 +2,9 @@
 <h3>简单好用的表单验证工具</h3>
 
 ### Features
-<p>使用简单；可以应对各种复杂场景；提供ref,方便foucs到报错元素</p>
+- 使用简单
+- 可以应对各种复杂场景
+- 提供ref,方便foucs到报错元素
 
 [![Build Status](https://travis-ci.com/jsweber/easycode-validateFieldDecorator.svg?branch=master)](https://travis-ci.com/jsweber/easycode-validateFieldDecorator)
 
@@ -144,42 +146,34 @@ export default Form(App)
 #### [如何实现支持ref转发的输入组件](./README-translate_ref.md)
 
 # 3. Props
-理解成装饰器或者高阶组件都可以
-
-## (1).Form
 ```js
-const WrapperedForm = Form(MyForm)
+    // Form和Field理解成装饰器或者高阶组件都可以
+    import {Form, Field} from 'validate-field-decorator'
+    const WrapperedForm = Form(MyForm)
+    const WrapperedInput = Field(MyInput)
 ```
-### MyForm
-- validateFields 提交时验证验证所有规则，使用见案例
+### MyForm's props from Form
+- validateFields 验证所有字段的规则，使用见案例
 
-### WrapperedForm
-
-- 没有必传的参数，可以根据自己的需要设置props
-
-## (2).Field
-
-```js
-const WrapperedInput = Form(MyInput)
-```
-
-### MyInput
+### MyInput's props from Field
 参数详情[如何实现支持ref转发的输入组件](./README-translate_ref.md)
 
-### WrapperedInput
+### WrapperedForm
+没有必传的参数，可以根据自己的需要设置prop
 
+### WrapperedInput
 - name @param{stringc | number} 必传且唯一，作为需要验证字段的key值
 - rules @param{object | array} 必传，字段验证规则，当只有一条规则时可以直接传一个对象，当有多条规则时，用数组，
 - value @param{number | string | boolean} 必传，作为input的value值
 - onChange @param{function }必传，作为input的change事件的监听函数
 - debounce @param{number} 可选，防抖的时间，单位毫秒
 
-### rule
-- validate 自定义验证函数，同步验证
-- asyncValidate 支持异步验证的函数
-- builtValidate 使用内置验证函数
-- message 作为验证不通过时的报错信息
-- param 可选，作为validate , builtValidate, asyncValidate 额外参数
+# 4.rule
+- validate @param{function} 自定义验证函数，同步验证
+- asyncValidate @param{function} 支持异步验证的函数
+- builtValidate @param{string} 使用内置验证函数
+- message @param{string} 作为验证不通过时的报错信息
+- param @param{array} 可选，作为validate , builtValidate, asyncValidate 额外参数
 
 #### 自定义同步验证函数
 ```js
@@ -195,7 +189,8 @@ const WrapperedInput = Form(MyInput)
 ```js
    {
         builtValidate: 'max',
-        message: 'required'
+        param: [10], // 当参数只有一个时，可以直接赋值10
+        message: 'value must smaller than 10'
    }
 ```
 
@@ -216,7 +211,7 @@ const WrapperedInput = Form(MyInput)
     }
 ```
 
-# 4. Built-in Validation
+# 5. Built-in Validation
 ```js
 
 const BuildValidationRule = {
@@ -244,7 +239,22 @@ const BuildValidationRule = {
 
 ```
 
-# 5. 可运行的npm命令
+# 6. Q&A
+#### 1.为什么不像elementUI那样把rules集中到Form上
+validateFieldDecorator是为了解决页面有大量input元素需要验证而诞生的。
+当页面有大量input（包括 checkbox, radio等），以至于开发者不得不分很多组件去实现时，
+如果在Form返回的父组件上去统一设置rules(一个由name作为键名，验证规则为键值的对象)，还需要在每个组件上设置name，不利于解耦和多人合作。
+所以validateFieldDecorator设计成用Form提供的<strong>validateFields</strong>方法统一验证，不需要关心子组件设置了哪些表单字段和验证规则，
+同时利用[refs转发](https://react.docschina.org/docs/forwarding-refs.html)，实现自动提供出错的input元素。
+
+#### 2. 如何实现validateFieldDecorator方法调用时，获取验证不通过的元素
+在使用Field时我们会如下调用
+```js
+ const InputWithValidation = Field(MineInput)
+```
+MineInput组件经过Field包装后，通过props可以得到一个_ref参数，把它传给你想定位元素的ref上，详情参照[如何实现支持ref转发的输入组件](./README-translate_ref.md)。
+
+# 7. 可运行的npm命令
 ### npm run dev
 运行开发环境
 浏览器访问http://localhost:8707
@@ -261,18 +271,3 @@ const BuildValidationRule = {
 
 ### npm lint
 检查代码规范
-
-# 6. QA
-#### 1.为什么不像elementUI那样把rules集中到Form上
-validateFieldDecorator是为了解决页面有大量input元素需要验证而诞生的。
-当页面有大量input（包括 checkbox, radio等），以至于开发者不得不分很多组件去实现时，
-如果在Form返回的父组件上去统一设置rules(一个由name作为键名，验证规则为键值的对象)，还需要在每个组件上设置name，不利于解耦和多人合作。
-所以validateFieldDecorator设计成用Form提供的<strong>validateFields</strong>方法统一验证，不需要关心子组件设置了哪些表单字段和验证规则，
-同时利用[refs转发](https://react.docschina.org/docs/forwarding-refs.html)，实现自动提供出错的input元素。
-
-#### 2. 如何实现validateFieldDecorator方法调用时，获取验证不通过的元素
-在使用Field时我们会如下调用
-```js
- const InputWithValidation = Field(MineInput)
-```
-MineInput组件经过Field包装后，通过props可以得到一个_ref参数，把它传给你想定位元素的ref上，详情参照[如何实现支持ref转发的输入组件](./README-translate_ref.md)。

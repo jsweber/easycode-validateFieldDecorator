@@ -16,6 +16,7 @@ class App extends React.Component{
             username: '',
             password: '',
             local: '',
+            age: '',
             sex: ''
         }
     }
@@ -106,6 +107,17 @@ class App extends React.Component{
                                 }, 500)
                             })
                         }
+                    }}
+                />
+                <InputWithValidate
+                    name="age"
+                    value={data.age}
+                    onChange= {this.changeValue('age')}
+                    required
+                    rules={{
+                        builtValidate: 'max',
+                        param: 35,
+                        errMsg: 'age must be smaller than 35'
                     }}
                 />
                 <RadioWithValidate

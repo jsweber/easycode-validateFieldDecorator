@@ -12,11 +12,11 @@ const BuildValidationRule = {
     },
 
     max(value, maxNumber){
-        return this.isNumber(value) && value <= maxNumber
+        return this.isNumber(Number(value)) && value <= maxNumber
     },
 
     min(value, minNumber) {
-        return this.isNumber(value) && value >= minNumber
+        return this.isNumber(Number(value)) && value >= minNumber
     }
 }
 
