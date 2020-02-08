@@ -30,7 +30,7 @@ const InputWithMsg = props => {
         _ref, // Field传给当前组件的prop， 详情参考 6.QA
         onChange,  // Field封装后返回的函数，Field需要监听值变化
         // 对于以下prop，Field没有经过任何改动，直接转发
-        label,
+        name,
         required, 
         ...rest
         } = props
@@ -42,7 +42,7 @@ const InputWithMsg = props => {
                     required && 
                     <i style={{color: 'red'}}>*</i>
                 }
-                {label}
+                {name}
             </label>
             <input
             // if you want to use auto focus when error happen, you neet to use _ref to translate ref
@@ -100,9 +100,8 @@ class App extends React.Component{
         return (
             <div>
                 <InputWithValidate
-                    label="username"
-                    required
                     name="username"
+                    required
                     value={data.username}
                     onChange= {this.changeValue('username')}
                     rules={{
@@ -112,9 +111,8 @@ class App extends React.Component{
                 />
 
                 <InputWithValidate
-                    label="password"
-                    required
                     name="password"
+                    required
                     value={data.password}
                     onChange= {this.changeValue('password')}
                     // multipe validater rules
@@ -229,11 +227,11 @@ const BuildValidationRule = {
     },
 
     max(value, maxNumber){
-        return this.isNumber(value) && value <= maxNumber
+        return this.isNumber(Number(value)) && value <= maxNumber
     },
 
     min(value, minNumber) {
-        return this.isNumber(value) && value >= minNumber
+        return this.isNumber(Number(value)) && value >= minNumber
     }
 }
 

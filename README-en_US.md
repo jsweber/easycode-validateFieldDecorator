@@ -16,6 +16,7 @@ Then use it.
 
 # 2. Base Example
 ```js
+
 import React from 'react'
 import {Form, Field} from 'validate-field-decorator'
 
@@ -25,7 +26,7 @@ const InputWithMsg = props => {
         msgChildren='no message', // this props is from Field, content of error message
         _ref, // this props is from Field, help locate field which happens error
         onChange,  // wrappered by Field
-        label,
+        name,
         required, 
         ...rest
         } = props
@@ -37,7 +38,7 @@ const InputWithMsg = props => {
                     required && 
                     <i style={{color: 'red'}}>*</i>
                 }
-                {label}
+                {name}
             </label>
             <input
             // if you want to use auto focus when error happen, you neet to use _ref to translate ref
@@ -95,9 +96,8 @@ class App extends React.Component{
         return (
             <div>
                 <InputWithValidate
-                    label="username"
-                    required
                     name="username"
+                    required
                     value={data.username}
                     onChange= {this.changeValue('username')}
                     rules={{
@@ -107,9 +107,8 @@ class App extends React.Component{
                 />
 
                 <InputWithValidate
-                    label="password"
-                    required
                     name="password"
+                    required
                     value={data.password}
                     onChange= {this.changeValue('password')}
                     // multipe validater rules
@@ -164,11 +163,11 @@ const BuildValidationRule = {
     },
 
     max(value, maxNumber){
-        return this.isNumber(value) && value <= maxNumber
+        return this.isNumber(Number(value)) && value <= maxNumber
     },
 
     min(value, minNumber) {
-        return this.isNumber(value) && value >= minNumber
+        return this.isNumber(Number(value)) && value >= minNumber
     }
 }
 
